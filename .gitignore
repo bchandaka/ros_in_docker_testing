@@ -2,7 +2,11 @@ src/
 devel/
 build/
 logs/
+compile_commands.json
 .catkin_tools/
+.clangd/
+.zsh_history
+
 # Created by https://www.toptal.com/developers/gitignore/api/c++
 # Edit at https://www.toptal.com/developers/gitignore?templates=c++
 
@@ -41,4 +45,8 @@ logs/
 *.app
 
 # End of https://www.toptal.com/developers/gitignore/api/c++
+<<<<<<< HEAD
 nn
+=======
+nn
+>>>>>>> template/main

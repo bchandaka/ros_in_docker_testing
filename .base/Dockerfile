@@ -53,10 +53,19 @@ RUN sh -c \
 # Insall catkin tools
 RUN python3 -m pip install --user --upgrade catkin-tools
 
-# Finish setup
-RUN echo 'source /home/$USER_NAME/ros_ws/devel/setup.zsh 2>/dev/null || true' > /home/$USER_NAME/.zshrc_local
+# Finish setup, and cleanup custom nacho stuff
+RUN echo 'source /opt/ros/noetic/setup.zsh 2>/dev/null || true' > /home/$USER_NAME/.zshrc_local
+RUN echo 'source /home/$USER_NAME/ros_ws/devel/setup.zsh 2>/dev/null || true' >> /home/$USER_NAME/.zshrc_local
+RUN echo 'export HISTFILE=/home/$USER_NAME/ros_ws/.zsh_history' >> /home/$USER_NAME/.zshrc_local
 RUN sed -i 's/\"fwalch\"/\"agnoster\"/' /home/$USER_NAME/.zshrc
+RUN sed -i 1,3d /home/$USER_NAME/.gitconfig
+
+# Fetch changes from the yadm repo
+RUN $HOME/.local/bin/yadm pull https://github.com/nachovizzo/dotfiles.git main
+
+# Add ROS entrypoint for zsh
 COPY ./ros_entrypoint.sh /
 ENTRYPOINT ["/ros_entrypoint.sh"]
-WORKDIR /home/$USER_NAME/ros_ws
-CMD ["zsh"]
+
+# Go back to root
+USER root
